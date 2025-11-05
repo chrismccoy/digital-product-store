@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings — Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="/css/app.css" rel="stylesheet" />
+  </head>
+  <body class="bg-slate-50 text-slate-900 font-sans antialiased">
+    <div class="flex min-h-screen">
+
+      <%- include('partials/sidebar', { activeNav: 'settings' }) %>
+
+      <div class="flex-1 flex flex-col min-w-0">
+        <header
+          class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 shrink-0"
+        >
+          <div>
+            <h1 class="text-base font-semibold text-slate-900">Settings</h1>
+            <p class="text-xs text-slate-500">Edit configuration without touching .env</p>
+          </div>
+        </header>
+
+        <main class="flex-1 p-6">
+          <div class="max-w-3xl mx-auto space-y-6">
+
+            <div
+              id="toast-notification"
+              class="fixed top-5 right-5 z-50 w-full max-w-sm hidden"
+              role="alert"
+            >
+              <div class="flex items-start gap-3 p-4 bg-white rounded-xl border border-slate-200 shadow-card">
+                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                  </svg>
+                </div>
+                <div class="flex-1 min-w-0 pt-0.5">
+                  <p class="text-sm font-semibold text-slate-900">Settings saved</p>
+                  <p id="toast-message" class="text-sm text-slate-500"></p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              id="form-error-message"
+              class="hidden flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4"
+            ></div>
+
+
+            <div class="border-b border-slate-200 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+              <nav id="settings-tabs" class="-mb-px flex gap-x-1 whitespace-nowrap" aria-label="Settings sections">
+                <button type="button" data-tab="general" class="settings-tab px-4 py-2.5 text-sm font-medium border-b-2 border-brand-500 text-brand-600 transition-colors">General</button>
+                <button type="button" data-tab="content" class="settings-tab px-4 py-2.5 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300 transition-colors">Shop content</button>
+                <button type="button" data-tab="shop" class="settings-tab px-4 py-2.5 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300 transition-colors">Shop</button>
+                <button type="button" data-tab="email" class="settings-tab px-4 py-2.5 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300 transition-colors">Email</button>
+                <button type="button" data-tab="mode" class="settings-tab px-4 py-2.5 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300 transition-colors">Mode</button>
+                <button type="button" data-tab="maintenance" class="settings-tab px-4 py-2.5 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300 transition-colors">Maintenance</button>
+                <button type="button" data-tab="seo" class="settings-tab px-4 py-2.5 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300 transition-colors">SEO</button>
+                <button type="button" data-tab="account" class="settings-tab px-4 py-2.5 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300 transition-colors">Account</button>
+              </nav>
+            </div>
+
+            <form id="settings-form" class="space-y-6">
+
+              <section data-tab-panel="general" class="bg-white rounded-xl border border-slate-200 shadow-card overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100">
+                  <h2 class="text-sm font-semibold text-slate-900">Site &amp; branding</h2>
+                  <p class="text-xs text-slate-500 mt-0.5">Applies live — no restart.</p>
+                </div>
+                <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div class="sm:col-span-2">
+                    <label for="site_title" class="block text-sm font-medium text-slate-700 mb-1.5">Site title</label>
+                    <input type="text" name="site_title" id="site_title" value="<%= site.siteTitle %>"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                  </div>
+                  <div>
+                    <label for="home_text" class="block text-sm font-medium text-slate-700 mb-1.5">Home link text</label>
+                    <input type="text" name="home_text" id="home_text" value="<%= site.homeText %>"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                  </div>
+                  <div>
+                    <label for="home_url" class="block text-sm font-medium text-slate-700 mb-1.5">Home URL</label>
+                    <input type="text" name="home_url" id="home_url" value="<%= site.homeURL %>"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                  </div>
+                  <div>
+                    <label for="contact_url" class="block text-sm font-medium text-slate-700 mb-1.5">Contact URL</label>
+                    <input type="text" name="contact_url" id="contact_url" value="<%= site.contactURL %>"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                  </div>
+                  <div>
+                    <label for="footer_domain" class="block text-sm font-medium text-slate-700 mb-1.5">Footer domain</label>
+                    <input type="text" name="footer_domain" id="footer_domain" value="<%= site.footerDomain %>"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                  </div>
+                </div>
+              </section>
+
+              <section data-tab-panel="content" class="hidden bg-white rounded-xl border border-slate-200 shadow-card overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100">
+                  <h2 class="text-sm font-semibold text-slate-900">Shop content</h2>
+                  <p class="text-xs text-slate-500 mt-0.5">Hero and page chrome text. Applies live — no restart.</p>
+                </div>
+                <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div class="sm:col-span-2">
+                    <label for="hero_badge" class="block text-sm font-medium text-slate-700 mb-1.5">Hero eyebrow</label>
+                    <input type="text" name="hero_badge" id="hero_badge" value="<%= hero.badge %>"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                  </div>
+                  <div>
+                    <label for="hero_heading" class="block text-sm font-medium text-slate-700 mb-1.5">Hero heading</label>
+                    <input type="text" name="hero_heading" id="hero_heading" value="<%= hero.heading %>"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                    <p class="text-xs text-slate-500 mt-1.5">Plain part (e.g. "The").</p>
+                  </div>
+                  <div>
+                    <label for="hero_highlight" class="block text-sm font-medium text-slate-700 mb-1.5">Hero highlighted word</label>
+                    <input type="text" name="hero_highlight" id="hero_highlight" value="<%= hero.highlight %>"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                    <p class="text-xs text-slate-500 mt-1.5">Gradient part (e.g. "Shop").</p>
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label for="hero_subtitle" class="block text-sm font-medium text-slate-700 mb-1.5">Hero subtitle</label>
+                    <textarea name="hero_subtitle" id="hero_subtitle" rows="2"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition resize-none"><%= hero.subtitle %></textarea>
+                  </div>
+                  <div>
+                    <label for="header_nav_label" class="block text-sm font-medium text-slate-700 mb-1.5">Header nav label</label>
+                    <input type="text" name="header_nav_label" id="header_nav_label" value="<%= hero.navLabel %>"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                  </div>
+                  <div>
+                    <label for="footer_rights" class="block text-sm font-medium text-slate-700 mb-1.5">Footer rights text</label>
+                    <input type="text" name="footer_rights" id="footer_rights" value="<%= hero.rights %>"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                    <p class="text-xs text-slate-500 mt-1.5">Year auto-updates.</p>
+                  </div>
+                </div>
+              </section>
+
+              <section data-tab-panel="shop" class="hidden bg-white rounded-xl border border-slate-200 shadow-card overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100">
+                  <h2 class="text-sm font-semibold text-slate-900">Shop</h2>
+                  <p class="text-xs text-slate-500 mt-0.5">Applies live — no restart.</p>
+                </div>
+                <div class="p-6 space-y-5">
+                  <div>
+                    <label for="items_per_page" class="block text-sm font-medium text-slate-700 mb-1.5">Products per page</label>
+                    <input type="number" min="1" step="1" name="items_per_page" id="items_per_page" value="<%= itemsPerPage %>"
+                      class="w-full sm:w-40 px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                    <p class="text-xs text-slate-500 mt-0.5">Number of products shown per page on the public shop.</p>
+                  </div>
+                  <div>
+                    <label for="admin_items_per_page" class="block text-sm font-medium text-slate-700 mb-1.5">Admin products per page</label>
+                    <input type="number" min="1" step="1" name="admin_items_per_page" id="admin_items_per_page" value="<%= adminItemsPerPage %>"
+                      class="w-full sm:w-40 px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                    <p class="text-xs text-slate-500 mt-0.5">Number of products per page in this admin dashboard list.</p>
+                  </div>
+                  <div>
+                    <label for="transactions_per_page" class="block text-sm font-medium text-slate-700 mb-1.5">Transactions per page</label>
+                    <input type="number" min="1" step="1" name="transactions_per_page" id="transactions_per_page" value="<%= transactionsPerPage %>"
+                      class="w-full sm:w-40 px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                    <p class="text-xs text-slate-500 mt-0.5">Number of purchases per page in the admin transactions list.</p>
+                  </div>
+                  <label class="flex items-start gap-3 cursor-pointer">
+                    <input type="checkbox" name="category_filter_enabled" value="1" <%= categoryFilterEnabled ? 'checked' : '' %>
+                      class="mt-0.5 h-4 w-4 rounded border-slate-300 text-brand-500 focus:ring-brand-500" />
+                    <span>
+                      <span class="block text-sm font-medium text-slate-700">Show category filter bar</span>
+                      <span class="block text-xs text-slate-500 mt-0.5">Shows the filter bar above the shop grid. Category pills and product-page category links always work regardless of this.</span>
+                    </span>
+                  </label>
+                  <label class="flex items-start gap-3 <%= sharpAvailable ? 'cursor-pointer' : 'cursor-not-allowed opacity-60' %>">
+                    <input type="checkbox" name="gallery_thumbnails" value="1" <%= galleryThumbnailsEnabled ? 'checked' : '' %> <%= sharpAvailable ? '' : 'disabled' %>
+                      class="mt-0.5 h-4 w-4 rounded border-slate-300 text-brand-500 focus:ring-brand-500" />
+                    <span>
+                      <span class="block text-sm font-medium text-slate-700">Generate gallery thumbnails</span>
+                      <span class="block text-xs text-slate-500 mt-0.5">
+                        Resizes newly uploaded screenshots to 640px-wide thumbnails for the grid, keeping the full image for the lightbox. Faster page loads on image-heavy products.
+                        <% if (!sharpAvailable) { %>
+                        <span class="block text-amber-600 mt-0.5">Requires the <code>sharp</code> package, which is not installed. Run <code>npm install sharp</code> and restart to enable.</span>
+                        <% } %>
+                      </span>
+                    </span>
+                  </label>
+                  <div>
+                    <label for="default_service_message" class="block text-sm font-medium text-slate-700 mb-1.5">Default no-file message</label>
+                    <textarea name="default_service_message" id="default_service_message" rows="2"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition resize-none"><%= defaultServiceMessage %></textarea>
+                    <p class="text-xs text-slate-500 mt-1.5">Shown after purchase for a product that has no file and no message of its own.</p>
+                  </div>
+                </div>
+              </section>
+
+              <section data-tab-panel="email" class="hidden bg-white rounded-xl border border-slate-200 shadow-card overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100">
+                  <h2 class="text-sm font-semibold text-slate-900">Email</h2>
+                  <p class="text-xs text-slate-500 mt-0.5">Applies live — no restart.</p>
+                </div>
+                <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div class="sm:col-span-2">
+                    <label for="email_subject" class="block text-sm font-medium text-slate-700 mb-1.5">Receipt email subject</label>
+                    <input type="text" name="email_subject" id="email_subject" value="<%= emailSubject %>"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                    <p class="text-xs text-slate-500 mt-1.5">Subject line of the purchase-receipt email sent to buyers.</p>
+                  </div>
+                  <div>
+                    <label for="email_from_name" class="block text-sm font-medium text-slate-700 mb-1.5">From name</label>
+                    <input type="text" name="email_from_name" id="email_from_name" value="<%= emailFromName %>" placeholder="Your Store Name"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                  </div>
+                  <div>
+                    <label for="email_from_email" class="block text-sm font-medium text-slate-700 mb-1.5">From email address</label>
+                    <input type="email" name="email_from_email" id="email_from_email" value="<%= emailFromEmail %>" placeholder="support@yourdomain.com"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                    <p class="text-xs text-slate-500 mt-1.5">The name and address buyers see in the "From" line.</p>
+                  </div>
+
+                  <div class="sm:col-span-2 border-t border-slate-100 pt-5">
+                    <label for="email_transport" class="block text-sm font-medium text-slate-700 mb-1.5">Delivery method</label>
+                    <select name="email_transport" id="email_transport"
+                      class="w-full sm:w-72 px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition">
+                      <option value="sendmail" <%= emailUseSendmail ? 'selected' : '' %>>Local sendmail</option>
+                      <option value="smtp" <%= emailUseSendmail ? '' : 'selected' %>>External SMTP server</option>
+                    </select>
+                  </div>
+
+                  <div id="email-sendmail-group" class="sm:col-span-2 <%= emailUseSendmail ? '' : 'hidden' %>">
+                    <label for="email_sendmail_path" class="block text-sm font-medium text-slate-700 mb-1.5">Sendmail path</label>
+                    <input type="text" name="email_sendmail_path" id="email_sendmail_path" value="<%= emailSendmailPath %>" placeholder="/usr/sbin/sendmail"
+                      class="w-full sm:w-96 px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                  </div>
+
+                  <div id="email-smtp-group" class="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-5 <%= emailUseSendmail ? 'hidden' : '' %>">
+                    <div>
+                      <label for="email_host" class="block text-sm font-medium text-slate-700 mb-1.5">SMTP host</label>
+                      <input type="text" name="email_host" id="email_host" value="<%= emailHost %>" placeholder="smtp.example.com"
+                        class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                    </div>
+                    <div>
+                      <label for="email_port" class="block text-sm font-medium text-slate-700 mb-1.5">SMTP port</label>
+                      <input type="number" min="1" max="65535" name="email_port" id="email_port" value="<%= emailPort %>" placeholder="587"
+                        class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                      <p class="text-xs text-slate-500 mt-1.5">465 uses SSL; 587 uses STARTTLS.</p>
+                    </div>
+                    <div>
+                      <label for="email_user" class="block text-sm font-medium text-slate-700 mb-1.5">SMTP username</label>
+                      <input type="text" name="email_user" id="email_user" value="<%= emailUser %>" autocomplete="off"
+                        class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                    </div>
+                    <div>
+                      <label for="email_pass" class="block text-sm font-medium text-slate-700 mb-1.5">SMTP password</label>
+                      <input type="password" name="email_pass" id="email_pass" value="" autocomplete="new-password"
+                        placeholder="<%= emailHasPass ? '•••••••• (set — leave blank to keep)' : 'SMTP password' %>"
+                        class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                      <p class="text-xs text-slate-500 mt-1.5">Leave blank to keep the current password.</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section data-tab-panel="email" class="hidden bg-white rounded-xl border border-slate-200 shadow-card overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100">
+                  <h2 class="text-sm font-semibold text-slate-900">Contact page</h2>
+                  <p class="text-xs text-slate-500 mt-0.5">Headings on the /contact page. Applies live — no restart.</p>
+                </div>
+                <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div class="sm:col-span-2">
+                    <label for="contact_eyebrow" class="block text-sm font-medium text-slate-700 mb-1.5">Eyebrow</label>
+                    <input type="text" name="contact_eyebrow" id="contact_eyebrow" value="<%= contactEyebrow %>"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                    <p class="text-xs text-slate-500 mt-1.5">Small pill above the heading.</p>
+                  </div>
+                  <div>
+                    <label for="contact_heading" class="block text-sm font-medium text-slate-700 mb-1.5">Heading</label>
+                    <input type="text" name="contact_heading" id="contact_heading" value="<%= contactHeading %>"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                    <p class="text-xs text-slate-500 mt-1.5">Plain part (e.g. "Get in").</p>
+                  </div>
+                  <div>
+                    <label for="contact_highlight" class="block text-sm font-medium text-slate-700 mb-1.5">Highlighted word</label>
+                    <input type="text" name="contact_highlight" id="contact_highlight" value="<%= contactHighlight %>"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                    <p class="text-xs text-slate-500 mt-1.5">Gradient part (e.g. "touch").</p>
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label for="contact_subtitle" class="block text-sm font-medium text-slate-700 mb-1.5">Subtitle</label>
+                    <textarea name="contact_subtitle" id="contact_subtitle" rows="2"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition resize-none"><%= contactSubtitle %></textarea>
+                  </div>
+                </div>
+              </section>
+
+              <section data-tab-panel="mode" class="hidden bg-white rounded-xl border border-slate-200 shadow-card overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+                  <div>
+                    <h2 class="text-sm font-semibold text-slate-900">Application mode</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Currently running in <strong><%= isShopMode ? 'shop' : 'single' %></strong> mode.</p>
+                  </div>
+                  <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">Applies live</span>
+                </div>
+                <div class="p-6 space-y-4">
+                  <div>
+                    <label for="app_mode" class="block text-sm font-medium text-slate-700 mb-1.5">Mode</label>
+                    <select name="app_mode" id="app_mode"
+                      class="w-full sm:w-60 px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition">
+                      <option value="shop" <%= isShopMode ? 'selected' : '' %>>Shop (multi-product store)</option>
+                      <option value="single" <%= isShopMode ? '' : 'selected' %>>Single product</option>
+                    </select>
+                  </div>
+
+                  <div id="single-product-wrap" class="<%= isShopMode ? 'hidden' : '' %>">
+                    <label for="single_product_id" class="block text-sm font-medium text-slate-700 mb-1.5">Single-mode product</label>
+                    <select name="single_product_id" id="single_product_id"
+                      class="w-full sm:w-96 px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition">
+                      <option value="">— Select a product —</option>
+                      <% products.forEach(function (p) { %>
+                        <option value="<%= p.id %>" <%= p.id === currentSingleId ? 'selected' : '' %>><%= p.name %></option>
+                      <% }); %>
+                    </select>
+                    <p class="text-xs text-slate-500 mt-1.5">Switching which product single mode serves applies live — no restart.</p>
+                  </div>
+                </div>
+              </section>
+
+              <section data-tab-panel="maintenance" class="hidden bg-white rounded-xl border border-slate-200 shadow-card overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100">
+                  <h2 class="text-sm font-semibold text-slate-900">Maintenance mode</h2>
+                  <p class="text-xs text-slate-500 mt-0.5">Applies live — no restart.</p>
+                </div>
+                <div class="p-6 space-y-5">
+                  <label class="flex items-start gap-3 cursor-pointer">
+                    <input type="checkbox" name="maintenance_mode" value="1" <%= maintenanceEnabled ? 'checked' : '' %>
+                      class="mt-0.5 h-4 w-4 rounded border-slate-300 text-brand-500 focus:ring-brand-500" />
+                    <span>
+                      <span class="block text-sm font-medium text-slate-700">Turn on maintenance mode</span>
+                      <span class="block text-xs text-slate-500 mt-0.5">Visitors see a maintenance page instead of the shop. You stay signed in and can still browse the live store to check it, and the admin area always stays open.</span>
+                    </span>
+                  </label>
+                  <div>
+                    <label for="maintenance_eyebrow" class="block text-sm font-medium text-slate-700 mb-1.5">Brand line</label>
+                    <input type="text" name="maintenance_eyebrow" id="maintenance_eyebrow" value="<%= maintenanceEyebrow %>" placeholder="<%= site.siteTitle %>"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                    <p class="text-xs text-slate-500 mt-1.5">Small text shown above the heading on the maintenance page. Leave blank to use your site title.</p>
+                  </div>
+                  <div>
+                    <label for="maintenance_heading" class="block text-sm font-medium text-slate-700 mb-1.5">Page heading</label>
+                    <input type="text" name="maintenance_heading" id="maintenance_heading" value="<%= maintenanceHeading %>" placeholder="We'll be right back"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                    <p class="text-xs text-slate-500 mt-1.5">Leave blank to use the default heading.</p>
+                  </div>
+                  <div>
+                    <label for="maintenance_message" class="block text-sm font-medium text-slate-700 mb-1.5">Page message</label>
+                    <textarea name="maintenance_message" id="maintenance_message" rows="3"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition resize-none" placeholder="The store is temporarily closed for maintenance. Please check back soon."><%= maintenanceMessage %></textarea>
+                    <p class="text-xs text-slate-500 mt-1.5">Leave blank to use the default message.</p>
+                  </div>
+                </div>
+              </section>
+
+              <section data-tab-panel="seo" class="hidden bg-white rounded-xl border border-slate-200 shadow-card overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100">
+                  <h2 class="text-sm font-semibold text-slate-900">Search engine optimization</h2>
+                  <p class="text-xs text-slate-500 mt-0.5">Applies live. Controls the tags search engines and social sites read.</p>
+                </div>
+                <div class="p-6 space-y-5">
+                  <div>
+                    <label for="seo_base_url" class="block text-sm font-medium text-slate-700 mb-1.5">Site base URL</label>
+                    <input type="url" name="seo_base_url" id="seo_base_url" value="<%= seoBaseUrl %>" placeholder="https://yourstore.com"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                    <p class="text-xs text-slate-500 mt-1.5">Your full public address. Used for links search engines and social sites follow. Leave blank to use the address of each request.</p>
+                  </div>
+                  <div>
+                    <label for="seo_default_description" class="block text-sm font-medium text-slate-700 mb-1.5">Default description</label>
+                    <textarea name="seo_default_description" id="seo_default_description" rows="2"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition resize-none"><%= seoDefaultDescription %></textarea>
+                    <p class="text-xs text-slate-500 mt-1.5">Shown in search results and social previews for pages without their own description.</p>
+                  </div>
+                  <div>
+                    <label for="seo_twitter_handle" class="block text-sm font-medium text-slate-700 mb-1.5">Twitter/X handle</label>
+                    <input type="text" name="seo_twitter_handle" id="seo_twitter_handle" value="<%= seoTwitterHandle %>" placeholder="@yourstore"
+                      class="w-full sm:w-72 px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                    <p class="text-xs text-slate-500 mt-1.5">Optional. Shown on shared links. The @ is added for you.</p>
+                  </div>
+                  <label class="flex items-start gap-3 cursor-pointer">
+                    <input type="checkbox" name="seo_discourage" value="1" <%= seoDiscourage ? 'checked' : '' %>
+                      class="mt-0.5 h-4 w-4 rounded border-slate-300 text-brand-500 focus:ring-brand-500" />
+                    <span>
+                      <span class="block text-sm font-medium text-slate-700">Discourage search engines</span>
+                      <span class="block text-xs text-slate-500 mt-0.5">Asks search engines not to list your store. Turn on before launch, off when you are ready to be found.</span>
+                    </span>
+                  </label>
+                </div>
+                <div class="px-6 pb-6">
+                  <p class="text-sm font-medium text-slate-700 mb-1.5">Social share image</p>
+                  <p class="text-xs text-slate-500 mb-3">Shown when a page is shared on social sites and chat apps. Product pages use their own image; this is the fallback.</p>
+                  <div id="og-image-error" class="hidden mb-3 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4"></div>
+                  <div class="flex flex-col sm:flex-row items-start gap-6">
+                    <img id="og-image-preview" src="<%= seoOgImage || '/images/placeholder.svg' %>" alt="Social image preview"
+                      onerror="this.onerror=null;this.src='/images/placeholder.svg';"
+                      class="h-28 w-52 rounded-lg border border-slate-200 object-cover bg-slate-50 shrink-0" />
+                    <div class="flex-1 space-y-3">
+                      <input type="file" id="og-image-input" accept="image/*"
+                        class="block w-full text-sm text-slate-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100" />
+                      <div class="flex items-center gap-3">
+                        <button type="button" id="og-image-upload-btn"
+                          class="px-5 py-2.5 bg-brand-500 hover:bg-brand-600 text-white text-sm font-semibold rounded-lg shadow-sm transition-colors">Upload</button>
+                        <button type="button" id="og-image-remove-btn"
+                          class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-lg transition-colors <%= seoOgImage ? '' : 'hidden' %>">Remove</button>
+                      </div>
+                      <p class="text-xs text-slate-500">Recommended size 1200x630. PNG, JPG, or WebP.</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <div id="settings-actions" class="flex items-center justify-end gap-3">
+                <button type="submit" id="settings-submit-btn"
+                  class="px-5 py-2.5 bg-brand-500 hover:bg-brand-600 text-white text-sm font-semibold rounded-lg shadow-sm transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">
+                  Save Settings
+                </button>
+              </div>
+            </form>
+
+            <form id="thumbnail-form" enctype="multipart/form-data">
+              <section data-tab-panel="content" class="hidden bg-white rounded-xl border border-slate-200 shadow-card overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100">
+                  <h2 class="text-sm font-semibold text-slate-900">Default thumbnail</h2>
+                  <p class="text-xs text-slate-500 mt-0.5">Used on the shop for any product with no image of its own. Falls back to a built-in placeholder when none is set.</p>
+                </div>
+                <div id="thumbnail-error" class="hidden mx-6 mt-5 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4"></div>
+                <div class="p-6 flex flex-col sm:flex-row items-start gap-6">
+                  <img id="thumbnail-preview" src="<%= defaultThumbnail %>" alt="Default thumbnail preview"
+                    onerror="this.onerror=null;this.src='/images/placeholder.svg';"
+                    class="h-28 w-40 rounded-lg border border-slate-200 object-cover bg-slate-50 shrink-0" />
+                  <div class="flex-1 space-y-3">
+                    <input type="file" name="image" id="thumbnail-input" accept="image/*"
+                      class="block w-full text-sm text-slate-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100" />
+                    <div class="flex items-center gap-3">
+                      <button type="submit" id="thumbnail-submit-btn"
+                        class="px-5 py-2.5 bg-brand-500 hover:bg-brand-600 text-white text-sm font-semibold rounded-lg shadow-sm transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">
+                        Upload
+                      </button>
+                      <button type="button" id="thumbnail-remove-btn"
+                        class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-lg transition-colors duration-150 <%= customThumbnail ? '' : 'hidden' %>">
+                        Remove
+                      </button>
+                    </div>
+                    <p class="text-xs text-slate-500">PNG, JPG, GIF, WebP, or SVG.</p>
+                  </div>
+                </div>
+              </section>
+            </form>
+
+            <form id="account-form">
+              <section data-tab-panel="account" class="hidden bg-white rounded-xl border border-slate-200 shadow-card overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100">
+                  <h2 class="text-sm font-semibold text-slate-900">Admin account</h2>
+                  <p class="text-xs text-slate-500 mt-0.5">Change your login. The password is stored hashed — applies immediately.</p>
+                </div>
+                <div id="account-error" class="hidden mx-6 mt-5 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4"></div>
+                <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div class="sm:col-span-2">
+                    <label for="new_username" class="block text-sm font-medium text-slate-700 mb-1.5">Username</label>
+                    <input type="text" name="new_username" id="new_username" value="<%= adminUsername %>" autocomplete="username"
+                      class="w-full sm:w-96 px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                  </div>
+                  <div>
+                    <label for="new_password" class="block text-sm font-medium text-slate-700 mb-1.5">New password</label>
+                    <input type="password" name="new_password" id="new_password" value="" autocomplete="new-password" placeholder="Leave blank to keep current"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                    <p class="text-xs text-slate-500 mt-1.5">Minimum 8 characters.</p>
+                  </div>
+                  <div>
+                    <label for="confirm_password" class="block text-sm font-medium text-slate-700 mb-1.5">Confirm new password</label>
+                    <input type="password" name="confirm_password" id="confirm_password" value="" autocomplete="new-password"
+                      class="w-full px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                  </div>
+                  <div class="sm:col-span-2 border-t border-slate-100 pt-5">
+                    <label for="current_password" class="block text-sm font-medium text-slate-700 mb-1.5">Current password <span class="text-red-500">*</span></label>
+                    <input type="password" name="current_password" id="current_password" value="" autocomplete="current-password" required
+                      class="w-full sm:w-96 px-3.5 py-2.5 text-sm text-slate-900 bg-white border border-slate-300 rounded-lg shadow-input focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition" />
+                    <p class="text-xs text-slate-500 mt-1.5">Required to confirm any change.</p>
+                  </div>
+                </div>
+                <div class="px-6 pb-6 flex items-center justify-end">
+                  <button type="submit" id="account-submit-btn"
+                    class="px-5 py-2.5 bg-brand-500 hover:bg-brand-600 text-white text-sm font-semibold rounded-lg shadow-sm transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">
+                    Update Account
+                  </button>
+                </div>
+              </section>
+            </form>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Tabbed navigation: show one section at a time. Hidden panels stay in
+        // the DOM so their fields still submit with the single settings save.
+        const tabButtons = Array.prototype.slice.call(document.querySelectorAll(".settings-tab"));
+        const tabPanels = Array.prototype.slice.call(document.querySelectorAll("[data-tab-panel]"));
+        const settingsTabNames = new Set(["general", "content", "shop", "email", "mode", "maintenance", "seo"]);
+        const settingsActions = document.getElementById("settings-actions");
+        const activateTab = (name) => {
+          tabButtons.forEach((btn) => {
+            const on = btn.dataset.tab === name;
+            btn.classList.toggle("border-brand-500", on);
+            btn.classList.toggle("text-brand-600", on);
+            btn.classList.toggle("border-transparent", !on);
+            btn.classList.toggle("text-slate-500", !on);
+          });
+          tabPanels.forEach((panel) => {
+            panel.classList.toggle("hidden", panel.dataset.tabPanel !== name);
+          });
+          // The shared Save button only applies to the settings-form tabs.
+          if (settingsActions) {
+            settingsActions.classList.toggle("hidden", !settingsTabNames.has(name));
+          }
+          if (history.replaceState) history.replaceState(null, "", "#" + name);
+        };
+        tabButtons.forEach((btn) =>
+          btn.addEventListener("click", () => activateTab(btn.dataset.tab)),
+        );
+        const initialTab = (location.hash || "").replace("#", "");
+        activateTab(
+          tabButtons.some((b) => b.dataset.tab === initialTab) ? initialTab : "general",
+        );
+
+        const form = document.getElementById("settings-form");
+        const modeSelect = document.getElementById("app_mode");
+        const singleWrap = document.getElementById("single-product-wrap");
+        const errorBox = document.getElementById("form-error-message");
+        const toast = document.getElementById("toast-notification");
+        const toastMessage = document.getElementById("toast-message");
+        let toastTimer;
+
+        const showToast = (message) => {
+          if (!toast) return;
+          clearTimeout(toastTimer);
+          toastMessage.textContent = message || "";
+          toast.classList.remove("hidden");
+          toastTimer = setTimeout(() => toast.classList.add("hidden"), 4000);
+        };
+
+        const showError = (message) => {
+          errorBox.innerHTML =
+            '<svg class="w-4 h-4 text-red-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>' +
+            '<p class="text-sm text-red-700">' + message + "</p>";
+          errorBox.classList.remove("hidden");
+        };
+
+        // Toggle the product picker with the selected mode.
+        modeSelect?.addEventListener("change", () => {
+          singleWrap.classList.toggle("hidden", modeSelect.value !== "single");
+        });
+
+        // Toggle sendmail vs SMTP field groups with the delivery method.
+        const transportSelect = document.getElementById("email_transport");
+        const sendmailGroup = document.getElementById("email-sendmail-group");
+        const smtpGroup = document.getElementById("email-smtp-group");
+        transportSelect?.addEventListener("change", () => {
+          const useSendmail = transportSelect.value === "sendmail";
+          sendmailGroup.classList.toggle("hidden", !useSendmail);
+          smtpGroup.classList.toggle("hidden", useSendmail);
+        });
+
+        form?.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          errorBox.classList.add("hidden");
+
+          const payload = Object.fromEntries(new FormData(form).entries());
+
+          // Single-product mode requires a selected product.
+          if (payload.app_mode === "single" && !(payload.single_product_id || "").trim()) {
+            showError("Choose a product to serve in single-product mode.");
+            document.getElementById("single_product_id")?.focus();
+            return;
+          }
+
+          try {
+            const response = await fetch("/admin/api/settings", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+            const result = await response.json();
+            if (result.success) {
+              showToast("Your changes have been saved.");
+            } else {
+              showError(result.message || "Could not save settings.");
+            }
+          } catch (error) {
+            showError("An unexpected network error occurred.");
+          }
+        });
+
+        // Account (username / password)
+        const accountForm = document.getElementById("account-form");
+        const accountError = document.getElementById("account-error");
+        const showAccountError = (message) => {
+          accountError.innerHTML =
+            '<svg class="w-4 h-4 text-red-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>' +
+            '<p class="text-sm text-red-700">' + message + "</p>";
+          accountError.classList.remove("hidden");
+        };
+
+        // Default thumbnail upload / remove (multipart, separate from the JSON save).
+        const thumbForm = document.getElementById("thumbnail-form");
+        const thumbInput = document.getElementById("thumbnail-input");
+        const thumbPreview = document.getElementById("thumbnail-preview");
+        const thumbError = document.getElementById("thumbnail-error");
+        const thumbRemoveBtn = document.getElementById("thumbnail-remove-btn");
+        const PLACEHOLDER = "/images/placeholder.svg";
+
+        const showThumbError = (message) => {
+          thumbError.innerHTML =
+            '<svg class="w-4 h-4 text-red-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>' +
+            '<p class="text-sm text-red-700">' + message + "</p>";
+          thumbError.classList.remove("hidden");
+        };
+
+        // Live preview of the chosen file before upload.
+        thumbInput?.addEventListener("change", (e) => {
+          const file = e.target.files[0];
+          if (file) thumbPreview.src = URL.createObjectURL(file);
+        });
+
+        thumbForm?.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          thumbError.classList.add("hidden");
+          if (!thumbInput.files[0]) {
+            showThumbError("Choose an image to upload.");
+            return;
+          }
+          try {
+            const response = await fetch("/admin/api/settings/default-thumbnail", {
+              method: "POST",
+              body: new FormData(thumbForm),
+            });
+            const result = await response.json();
+            if (result.success) {
+              showToast("Default thumbnail updated.");
+              thumbPreview.src = result.image;
+              thumbInput.value = "";
+              thumbRemoveBtn.classList.remove("hidden");
+            } else {
+              showThumbError(result.message || "Could not upload thumbnail.");
+            }
+          } catch (error) {
+            showThumbError("An unexpected network error occurred.");
+          }
+        });
+
+        thumbRemoveBtn?.addEventListener("click", async () => {
+          thumbError.classList.add("hidden");
+          try {
+            const response = await fetch("/admin/api/settings/default-thumbnail/remove", {
+              method: "POST",
+            });
+            const result = await response.json();
+            if (result.success) {
+              showToast("Default thumbnail removed.");
+              thumbPreview.src = PLACEHOLDER;
+              thumbRemoveBtn.classList.add("hidden");
+            } else {
+              showThumbError(result.message || "Could not remove thumbnail.");
+            }
+          } catch (error) {
+            showThumbError("An unexpected network error occurred.");
+          }
+        });
+
+        // SEO social image upload / remove (multipart, separate from JSON save).
+        const ogInput = document.getElementById("og-image-input");
+        const ogPreview = document.getElementById("og-image-preview");
+        const ogError = document.getElementById("og-image-error");
+        const ogUploadBtn = document.getElementById("og-image-upload-btn");
+        const ogRemoveBtn = document.getElementById("og-image-remove-btn");
+        const showOgError = (m) => {
+          ogError.innerHTML =
+            '<svg class="w-4 h-4 text-red-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>' +
+            '<p class="text-sm text-red-700">' + m + "</p>";
+          ogError.classList.remove("hidden");
+        };
+        ogInput?.addEventListener("change", (e) => {
+          const f = e.target.files[0];
+          if (f) ogPreview.src = URL.createObjectURL(f);
+        });
+        ogUploadBtn?.addEventListener("click", async () => {
+          ogError.classList.add("hidden");
+          if (!ogInput.files[0]) return showOgError("Choose an image to upload.");
+          const fd = new FormData();
+          fd.append("image", ogInput.files[0]);
+          try {
+            const r = await fetch("/admin/api/settings/og-image", { method: "POST", body: fd });
+            const d = await r.json();
+            if (d.success) { showToast("Social image updated."); ogPreview.src = d.image; ogInput.value = ""; ogRemoveBtn.classList.remove("hidden"); }
+            else showOgError(d.message || "Could not upload image.");
+          } catch { showOgError("An unexpected network error occurred."); }
+        });
+        ogRemoveBtn?.addEventListener("click", async () => {
+          ogError.classList.add("hidden");
+          try {
+            const r = await fetch("/admin/api/settings/og-image/remove", { method: "POST" });
+            const d = await r.json();
+            if (d.success) { showToast("Social image removed."); ogPreview.src = "/images/placeholder.svg"; ogRemoveBtn.classList.add("hidden"); }
+            else showOgError(d.message || "Could not remove image.");
+          } catch { showOgError("An unexpected network error occurred."); }
+        });
+
+        accountForm?.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          accountError.classList.add("hidden");
+
+          const payload = Object.fromEntries(new FormData(accountForm).entries());
+          if (payload.new_password && payload.new_password !== payload.confirm_password) {
+            showAccountError("New password and confirmation do not match.");
+            return;
+          }
+
+          try {
+            const response = await fetch("/admin/api/account", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+            const result = await response.json();
+            if (result.success) {
+              showToast("Account updated.");
+              accountForm.querySelector("#new_password").value = "";
+              accountForm.querySelector("#confirm_password").value = "";
+              accountForm.querySelector("#current_password").value = "";
+            } else {
+              showAccountError(result.message || "Could not update account.");
+            }
+          } catch (error) {
+            showAccountError("An unexpected network error occurred.");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

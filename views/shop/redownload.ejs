@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../partials/head', { seo: typeof seo !== 'undefined' ? seo : undefined }) %>
+    </head>
+    <body
+        class="font-sans antialiased bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 selection:bg-brand-400/30"
+    >
+
+	<%- include('../partials/header') %>
+
+            <main
+                class="relative z-10 flex-1 mx-auto w-full max-w-7xl px-6 lg:px-8 pb-24"
+            >
+                <section class="pt-12 pb-10 text-center">
+                    <div
+                        class="mb-5 inline-flex items-center gap-2 rounded-full border border-brand-400/20 bg-brand-400/10 px-4 py-2 text-xs font-medium tracking-[0.2em] text-brand-700 uppercase dark:text-brand-200"
+                    >
+                        Lost your file? We've got you
+                    </div>
+                    <h2
+                        class="text-5xl font-black leading-none tracking-tight text-slate-950 dark:text-white sm:text-6xl lg:text-7xl"
+                    >
+                        Redownload your
+                        <span
+                            class="bg-gradient-to-r from-brand-500 via-cyan-500 to-fuchsia-500 bg-clip-text text-transparent"
+                        >
+                            purchase
+                        </span>
+                    </h2>
+                    <p
+                        class="mx-auto mt-5 max-w-xl text-lg leading-8 text-slate-600 dark:text-slate-300"
+                    >
+                        Enter your Transaction ID <strong>or</strong> the email
+                        address you used at checkout to regain access to your
+                        download.
+                    </p>
+                </section>
+
+                <section class="mx-auto max-w-xl">
+                    <div
+                        class="overflow-hidden rounded-[2rem] border border-slate-200 bg-white/80 shadow-panelLight dark:border-white/10 dark:bg-white/5 dark:shadow-panelDark"
+                    >
+                        <div
+                            class="border-b border-slate-200 bg-slate-50/80 px-8 py-5 dark:border-white/10 dark:bg-white/5"
+                        >
+                            <p
+                                class="text-sm font-semibold text-slate-950 dark:text-white"
+                            >
+                                Verify your purchase
+                            </p>
+                            <p
+                                class="mt-1 text-xs text-slate-500 dark:text-slate-400"
+                            >
+                                Fill in either field below — not both.
+                            </p>
+                        </div>
+
+                        <form
+                            id="redownload-form"
+                            class="p-8 space-y-6"
+                        >
+                            <div>
+                                <label
+                                    for="transactionId"
+                                    class="block text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2"
+                                >
+                                    PayPal Transaction ID
+                                </label>
+                                <input
+                                    type="text"
+                                    id="transactionId"
+                                    name="transactionId"
+                                    placeholder="e.g. 1AB23456CD789012E"
+                                    class="block w-full rounded-xl border border-slate-200 bg-white/70 px-4 py-3 text-base text-slate-950 placeholder:text-slate-400 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-400/10 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-brand-400/50"
+                                />
+                            </div>
+
+                            <div
+                                class="relative flex items-center"
+                                aria-hidden="true"
+                            >
+                                <div
+                                    class="flex-grow border-t border-slate-200 dark:border-white/10"
+                                ></div>
+                                <span
+                                    class="mx-4 text-xs font-semibold uppercase text-slate-400 dark:text-slate-500"
+                                    >or</span
+                                >
+                                <div
+                                    class="flex-grow border-t border-slate-200 dark:border-white/10"
+                                ></div>
+                            </div>
+
+                            <div>
+                                <label
+                                    for="email"
+                                    class="block text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2"
+                                >
+                                    Purchase Email Address
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    placeholder="you@example.com"
+                                    class="block w-full rounded-xl border border-slate-200 bg-white/70 px-4 py-3 text-base text-slate-950 placeholder:text-slate-400 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-400/10 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-brand-400/50"
+                                />
+                            </div>
+
+                            <div id="error-container"></div>
+
+                            <button
+                                type="submit"
+                                class="group flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-950 px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-150 hover:scale-[1.02] hover:bg-brand-600 dark:bg-white dark:text-slate-950 dark:hover:bg-brand-100"
+                            >
+                                <svg
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path
+                                        d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                                    />
+                                    <polyline points="7 10 12 15 17 10" />
+                                    <line x1="12" y1="15" x2="12" y2="3" />
+                                </svg>
+                                Verify &amp; Download
+                            </button>
+                        </form>
+                    </div>
+
+                    <div id="result-container" class="mt-8 text-center"></div>
+                </section>
+            </main>
+
+	    <%- include('../partials/footer') %>
+        </div>
+
+        <script src="/js/redownload-handler.js"></script>
+    </body>
+</html>

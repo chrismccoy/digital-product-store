@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= heading %> // <%= siteTitle %></title>
+    <link href="/css/app.css" rel="stylesheet" />
+  </head>
+  <body
+    class="font-sans antialiased bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 selection:bg-brand-400/30"
+  >
+    <main class="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 py-16 text-center">
+      <div class="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center">
+        <div class="h-[32rem] w-[32rem] rounded-full bg-gradient-to-tr from-brand-400/20 via-cyan-400/10 to-fuchsia-400/20 blur-3xl"></div>
+      </div>
+
+      <div class="mb-8 inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-brand-400/20 bg-brand-400/10 text-brand-600 dark:text-brand-300">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.7 6.3a4 4 0 00-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.6 2.6-2.8-.7-.7-2.8 2.6-2.6z" />
+        </svg>
+      </div>
+
+      <p class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-brand-600 dark:text-brand-300">
+        <%= eyebrow %>
+      </p>
+
+      <h1 class="max-w-2xl text-4xl font-black leading-tight tracking-tight text-slate-950 dark:text-white sm:text-5xl">
+        <span class="bg-gradient-to-r from-brand-500 via-cyan-500 to-fuchsia-500 bg-clip-text text-transparent">
+          <%= heading %>
+        </span>
+      </h1>
+
+      <p class="mx-auto mt-5 max-w-xl text-lg leading-8 text-slate-600 dark:text-slate-300">
+        <%= message %>
+      </p>
+    </main>
+  </body>
+</html>

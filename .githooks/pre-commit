@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# Rebuilds the compiled Tailwind CSS and stages it, so the committed
+# public/css/app.css always matches the current sources. Runs on every commit.
+#
+# Enable once per clone with:
+#   git config core.hooksPath .githooks
+#
+# Bypass for a single commit with:  git commit --no-verify
+
+if ! npm run build:css --silent; then
+  echo "pre-commit: CSS build failed. Fix the error above, then commit again." >&2
+  exit 1
+fi
+
+git add public/css/app.css

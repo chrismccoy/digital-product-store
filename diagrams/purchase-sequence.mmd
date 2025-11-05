@@ -1,0 +1,63 @@
+flowchart TD
+  browser["Browser: checkout.js + PayPal SDK"]
+  ppCreate(["PayPal: create order"])
+  captureRoute["POST /api/capture-order"]
+  captureCtrl["purchase.controller.captureOrder"]
+  getProduct["product.service.getProductById (authoritative price)"]
+  db[("SQLite store.db")]
+  ppCapture["paypal.service.captureOrder"]
+  ppApi(["PayPal REST API: /v2/checkout/orders/{id}/capture"])
+  check{"status COMPLETED and pricesMatch?"}
+  fail["500 error (logs SECURITY ALERT on price mismatch)"]
+  completeSale["sale.service.completeSale"]
+  appendTx["transaction.service.appendTransaction"]
+  sendEmail["email.service.sendPurchaseReceipt (async, non-blocking)"]
+  smtp(["SMTP / sendmail"])
+  markSent["markEmailSent on success"]
+  respond["respond {success, transactionId}"]
+  freePath["free product (price == 0): skip PayPal"]
+  successPage["renderSuccessPage (/purchase/success)"]
+  grant["issue single-use, 15-min download grant<br/>(session.authorizedProduct)"]
+  dlRoute["GET /download/product"]
+  serveFile["download.controller.serveProductFile"]
+  consume{"grant valid and not expired?"}
+  fileStore[("private_downloads/")]
+  redownloadjs["redownload-handler.js"]
+  verifyRoute["POST /api/verify-transaction"]
+  verifyCtrl["verifyAndAuthorizeRedownload"]
+
+  browser -->|"create order"| ppCreate
+  ppCreate -->|"orderID"| browser
+  browser -->|"POST orderID + productID"| captureRoute
+  captureRoute --> captureCtrl
+  captureCtrl -->|"read live price"| getProduct
+  getProduct --> db
+  captureCtrl -->|"capture payment"| ppCapture
+  ppCapture --> ppApi
+  ppApi -->|"status, amount"| check
+  check -->|"mismatch or not completed"| fail
+  check -->|"valid"| completeSale
+  completeSale --> appendTx
+  appendTx --> db
+  completeSale -->|"background"| sendEmail
+  sendEmail --> smtp
+  sendEmail -->|"on success"| markSent
+  markSent --> db
+  completeSale -->|"transactionId"| respond
+  respond --> successPage
+
+  browser -->|"price == 0"| freePath
+  freePath --> successPage
+
+  successPage --> grant
+  grant -->|"one-time token"| dlRoute
+  dlRoute --> serveFile
+  serveFile --> consume
+  consume -->|"no: 403 -> /redownload"| redownloadjs
+  consume -->|"yes: res.download"| fileStore
+
+  browser -->|"lost link"| redownloadjs
+  redownloadjs -->|"fetch"| verifyRoute
+  verifyRoute --> verifyCtrl
+  verifyCtrl -->|"lookup by transaction id / email"| db
+  verifyCtrl -->|"re-grant"| grant

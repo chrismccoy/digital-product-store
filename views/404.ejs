@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Page not found // <%= siteTitle %></title>
+    <link href="/css/app.css" rel="stylesheet" />
+  </head>
+  <body
+    class="font-sans antialiased bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 selection:bg-brand-400/30"
+  >
+    <main class="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 py-16 text-center">
+      <div class="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center">
+        <div class="h-[32rem] w-[32rem] rounded-full bg-gradient-to-tr from-brand-400/20 via-cyan-400/10 to-fuchsia-400/20 blur-3xl"></div>
+      </div>
+
+      <p class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-brand-600 dark:text-brand-300">
+        <%= siteTitle %>
+      </p>
+
+      <h1 class="text-7xl font-black leading-none tracking-tight text-slate-950 dark:text-white sm:text-8xl">
+        <span class="bg-gradient-to-r from-brand-500 via-cyan-500 to-fuchsia-500 bg-clip-text text-transparent">
+          404
+        </span>
+      </h1>
+
+      <h2 class="mt-6 text-2xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-3xl">
+        Page not found
+      </h2>
+
+      <p class="mx-auto mt-4 max-w-md text-lg leading-8 text-slate-600 dark:text-slate-300">
+        The page you are looking for does not exist, or it may have moved.
+      </p>
+
+      <a href="/"
+         class="mt-8 inline-flex items-center gap-2 rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+        Back to the shop
+      </a>
+    </main>
+  </body>
+</html>

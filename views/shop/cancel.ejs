@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../partials/head', { seo: typeof seo !== 'undefined' ? seo : undefined }) %>
+    </head>
+    <body
+        class="font-sans antialiased bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 selection:bg-brand-400/30"
+    >
+
+	<%- include('../partials/header') %>
+
+            <main class="relative z-10 flex-1 mx-auto w-full max-w-7xl px-6 lg:px-8 pb-24">
+                <section class="pt-12 pb-10 text-center">
+                    <div
+                        class="mb-5 inline-flex items-center gap-2 rounded-full border border-red-400/20 bg-red-400/10 px-4 py-2 text-xs font-medium tracking-[0.2em] text-red-700 uppercase dark:text-red-300"
+                    >
+                        Transaction not completed
+                    </div>
+                    <h2
+                        class="text-5xl font-black leading-none tracking-tight text-slate-950 dark:text-white sm:text-6xl lg:text-7xl"
+                    >
+                        Transaction
+                        <span
+                            class="bg-gradient-to-r from-red-500 via-rose-500 to-fuchsia-500 bg-clip-text text-transparent"
+                        >
+                            Canceled
+                        </span>
+                    </h2>
+                    <p
+                        class="mx-auto mt-5 max-w-xl text-lg leading-8 text-slate-600 dark:text-slate-300"
+                    >
+                        Your transaction was not completed. You can return to
+                        the purchase page at any time to try again — no charges
+                        were made.
+                    </p>
+                </section>
+
+                <section class="max-w-4xl mx-auto">
+                    <div
+                        class="overflow-hidden rounded-[2rem] border border-slate-200 bg-white/80 shadow-panelLight dark:border-white/10 dark:bg-white/5 dark:shadow-panelDark"
+                    >
+                        <div
+                            class="flex items-center justify-between gap-4 border-b border-slate-200 bg-slate-50/80 px-8 py-5 dark:border-white/10 dark:bg-white/5"
+                        >
+                            <h3
+                                class="text-xl font-bold text-slate-950 dark:text-white"
+                            >
+                                <%= product.name %>
+                            </h3>
+                            <span
+                                class="rounded-full border border-red-200 bg-red-50 px-3 py-1 text-xs font-semibold text-red-600 dark:border-red-400/20 dark:bg-red-400/10 dark:text-red-300"
+                            >
+                                Canceled
+                            </span>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row">
+                            <div class="flex-1 p-8">
+                                <div
+                                    class="grid grid-cols-1 gap-6 border-b border-slate-200 pb-8 dark:border-white/10 sm:grid-cols-3"
+                                >
+                                    <div>
+                                        <p
+                                            class="text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500"
+                                        >
+                                            Product
+                                        </p>
+                                        <p
+                                            class="mt-1 text-lg font-bold text-slate-950 dark:text-white"
+                                        >
+                                            <%= product.name %>
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p
+                                            class="text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500"
+                                        >
+                                            Order Status
+                                        </p>
+                                        <span
+                                            class="mt-2 inline-flex items-center gap-1.5 rounded-full border border-red-200 bg-red-50 px-3 py-1 text-sm font-semibold text-red-600 dark:border-red-400/20 dark:bg-red-400/10 dark:text-red-300"
+                                        >
+                                            <span
+                                                class="h-1.5 w-1.5 rounded-full bg-red-500"
+                                            ></span>
+                                            Canceled
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <p
+                                            class="text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500"
+                                        >
+                                            Charge Status
+                                        </p>
+                                        <span
+                                            class="mt-2 inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-600 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300"
+                                        >
+                                            <span
+                                                class="h-1.5 w-1.5 rounded-full bg-emerald-500"
+                                            ></span>
+                                            Not Charged
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-3"
+                                >
+                                    <div>
+                                        <p
+                                            class="text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500"
+                                        >
+                                            Item Price
+                                        </p>
+                                        <p
+                                            class="mt-1 text-4xl font-black tracking-tight text-slate-950 dark:text-white"
+                                        >
+                                            $<%= parseInt(product.price) %>
+                                        </p>
+                                        <p
+                                            class="text-xs text-slate-400 dark:text-slate-500"
+                                        >
+                                            USD
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p
+                                            class="text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500"
+                                        >
+                                            Transaction ID
+                                        </p>
+                                        <p
+                                            class="mt-1 text-2xl font-bold text-slate-400 dark:text-slate-500"
+                                        >
+                                            N/A
+                                        </p>
+                                        <p
+                                            class="text-xs text-slate-400 dark:text-slate-500"
+                                        >
+                                            Incomplete
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p
+                                            class="text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500"
+                                        >
+                                            Download
+                                        </p>
+                                        <p
+                                            class="mt-1 text-2xl font-bold text-slate-400 dark:text-slate-500"
+                                        >
+                                            Void
+                                        </p>
+                                        <p
+                                            class="text-xs text-slate-400 dark:text-slate-500"
+                                        >
+                                            Access Denied
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="flex flex-shrink-0 flex-col items-center justify-center gap-4 border-t border-dashed border-slate-200 p-8 dark:border-white/10 md:w-64 md:border-l md:border-t-0"
+                            >
+                                <div
+                                    class="flex h-20 w-20 items-center justify-center rounded-2xl border border-red-200 bg-red-50 dark:border-red-400/20 dark:bg-red-400/10"
+                                >
+                                    <svg
+                                        width="36"
+                                        height="36"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="text-red-500"
+                                    >
+                                        <circle cx="12" cy="12" r="10" />
+                                        <line
+                                            x1="15"
+                                            y1="9"
+                                            x2="9"
+                                            y2="15"
+                                        />
+                                        <line
+                                            x1="9"
+                                            y1="9"
+                                            x2="15"
+                                            y2="15"
+                                        />
+                                    </svg>
+                                </div>
+                                <p
+                                    class="text-center text-sm font-semibold text-slate-950 dark:text-white"
+                                >
+                                    <%= product.name %>
+                                </p>
+                                <div class="w-full space-y-2">
+                                    <div
+                                        class="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2 dark:bg-white/5"
+                                    >
+                                        <span
+                                            class="text-xs text-slate-500 dark:text-slate-400"
+                                            >Download</span
+                                        >
+                                        <span
+                                            class="text-xs font-semibold text-red-500"
+                                            >Inactive</span
+                                        >
+                                    </div>
+                                    <div
+                                        class="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2 dark:bg-white/5"
+                                    >
+                                        <span
+                                            class="text-xs text-slate-500 dark:text-slate-400"
+                                            >Access</span
+                                        >
+                                        <span
+                                            class="text-xs font-semibold text-red-500"
+                                            >Denied</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mx-auto mt-10 max-w-md">
+                    <a
+                        href="/product/<%= product.id %>"
+                        class="group flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-950 px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-150 hover:scale-[1.02] hover:bg-brand-600 dark:bg-white dark:text-slate-950 dark:hover:bg-brand-100"
+                    >
+                        <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M19 12H5M12 5l-7 7 7 7" />
+                        </svg>
+                        Return to Purchase Page
+                    </a>
+                </section>
+            </main>
+
+	    <%- include('../partials/footer') %>
+        </div>
+    </body>
+</html>

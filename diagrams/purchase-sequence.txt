@@ -1,0 +1,110 @@
+Title: Purchase & Download
+
+  +-----------------------------------+
+  | Browser: checkout.js + PayPal SDK |
+  +-----------------------------------+
+        |                 ^   \
+        | create order    |    \  price == 0 (free product)
+        v                 |     \--------------------------------+
+   ( PayPal: create order )     | orderID                        |
+        |                       |                                |
+        +-----------------------+                                |
+        |                                                        |
+        | POST orderID + productID                               |
+        v                                                        |
+  +------------------------------+                               |
+  | POST /api/capture-order      |                               |
+  +------------------------------+                               |
+        |                                                        |
+        v                                                        |
+  +-----------------------------------+                          |
+  | purchase.controller.captureOrder  |                          |
+  +-----------------------------------+                          |
+        |                        \                               |
+        | read live price         \ capture payment              |
+        v                          v                             |
+  +----------------------+  +-----------------------------+       |
+  | getProductById       |  | paypal.service.captureOrder |       |
+  | (reads SQLite)       |  +-----------------------------+       |
+  +----------------------+            |                           |
+                                      v                           |
+                          ( PayPal REST API:                      |
+                            /v2/checkout/orders/{id}/capture )    |
+                                      | status, amount            |
+                                      v                           |
+                          +-----------------------------+         |
+                          | status COMPLETED and        |         |
+                          | pricesMatch?    (decision)  |         |
+                          +-----------------------------+         |
+                    mismatch /  |               | valid          |
+                    not completed v              v               |
+                 +--------------------+  +----------------------+ |
+                 | 500 error          |  | sale.service         | |
+                 | (SECURITY ALERT)   |  | .completeSale        | |
+                 +--------------------+  +----------------------+ |
+                                          |    |    |             |
+          appendTransaction (writes  <----+    |    | transactionId
+          SQLite)                              |    v             |
+                                               | +--------------------+
+          sendPurchaseReceipt (async, <--------+ | respond {success,  |
+          non-blocking)                          | transactionId}     |
+            |   \-> ( SMTP / sendmail )          +--------------------+
+            | on success                                |            |
+            v                                           |            |
+          markEmailSent (writes SQLite)                 |            |
+                                                        v            v
+                                          +-------------------------------+
+                                          | renderSuccessPage             |
+                                          | (/purchase/success)           |
+                                          +-------------------------------+
+                                                        |
+                                                        v
+        re-grant  ------------------------->  +-------------------------------+
+        (from redownload, below)              | issue single-use, 15-min      |
+                                              | download grant                |
+                                              | (session.authorizedProduct)   |
+                                              +-------------------------------+
+                                                        | one-time token
+                                                        v
+                                              +-------------------------------+
+                                              | GET /download/product         |
+                                              +-------------------------------+
+                                                        |
+                                                        v
+                                              +-------------------------------+
+                                              | serveProductFile              |
+                                              +-------------------------------+
+                                                        |
+                                                        v
+                                              +-------------------------------+
+                                              | grant valid and not expired?  |
+                                              | (decision)                    |
+                                              +-------------------------------+
+                                     no: 403 -> /redownload |    | yes: res.download
+                                                        v        v
+                                          +------------------+  [( private_downloads/ )]
+                                          | redownload-      | <---- (browser: lost link)
+                                          | handler.js       |
+                                          +------------------+
+                                                        | fetch
+                                                        v
+                                          +------------------------------+
+                                          | POST /api/verify-transaction |
+                                          +------------------------------+
+                                                        |
+                                                        v
+                                          +------------------------------+
+                                          | verifyAndAuthorizeRedownload |
+                                          | (lookup by id / email in     |
+                                          |  SQLite; re-grants above)    |
+                                          +------------------------------+
+
+
+Legend:
+  +----+          process / route / controller node
+  ( .... )        external system (PayPal create-order, PayPal REST API, SMTP/sendmail)
+  [( .... )]      data store (SQLite store.db, private_downloads/)
+  "... ?" box     decision point
+  |  v  --->       flow direction; text on an arrow is its edge label / condition
+  "reads/writes SQLite"   shared data-store access shown as an annotation
+  re-grant / lost link    cross-links back to a box drawn elsewhere

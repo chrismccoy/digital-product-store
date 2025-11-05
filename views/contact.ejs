@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('partials/head', { seo: typeof seo !== 'undefined' ? seo : undefined }) %>
+    </head>
+    <body
+        class="font-sans antialiased bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 selection:bg-brand-400/30"
+    >
+
+	<%- include('partials/header') %>
+
+            <main
+                class="relative z-10 flex-1 mx-auto w-full max-w-7xl px-6 lg:px-8 pb-24"
+            >
+                <section class="pt-12 pb-10 text-center">
+                    <div
+                        class="mb-5 inline-flex items-center gap-2 rounded-full border border-brand-400/20 bg-brand-400/10 px-4 py-2 text-xs font-medium tracking-[0.2em] text-brand-700 uppercase dark:text-brand-200"
+                    >
+                        <%= eyebrow %>
+                    </div>
+                    <h2
+                        class="text-5xl font-black leading-none tracking-tight text-slate-950 dark:text-white sm:text-6xl lg:text-7xl"
+                    >
+                        <%= heading %>
+                        <span
+                            class="bg-gradient-to-r from-brand-500 via-cyan-500 to-fuchsia-500 bg-clip-text text-transparent"
+                        >
+                            <%= highlight %>
+                        </span>
+                    </h2>
+                    <p
+                        class="mx-auto mt-5 max-w-xl text-lg leading-8 text-slate-600 dark:text-slate-300"
+                    >
+                        <%= subtitle %>
+                    </p>
+                </section>
+
+                <section class="mx-auto max-w-xl">
+                    <div
+                        class="overflow-hidden rounded-[2rem] border border-slate-200 bg-white/80 shadow-panelLight dark:border-white/10 dark:bg-white/5 dark:shadow-panelDark"
+                    >
+                        <div
+                            class="border-b border-slate-200 bg-slate-50/80 px-8 py-5 dark:border-white/10 dark:bg-white/5"
+                        >
+                            <p
+                                class="text-sm font-semibold text-slate-950 dark:text-white"
+                            >
+                                Send us a message
+                            </p>
+                            <p
+                                class="mt-1 text-xs text-slate-500 dark:text-slate-400"
+                            >
+                                All fields are required.
+                            </p>
+                        </div>
+
+                        <form id="contact-form" class="p-8 space-y-6" novalidate>
+                            <div>
+                                <label
+                                    for="name"
+                                    class="block text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2"
+                                >
+                                    Your Name
+                                </label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    placeholder="Jane Doe"
+                                    maxlength="100"
+                                    class="block w-full rounded-xl border border-slate-200 bg-white/70 px-4 py-3 text-base text-slate-950 placeholder:text-slate-400 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-400/10 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-brand-400/50"
+                                />
+                                <p
+                                    id="error-name"
+                                    class="mt-2 hidden text-sm text-red-600 dark:text-red-400"
+                                ></p>
+                            </div>
+
+                            <div>
+                                <label
+                                    for="email"
+                                    class="block text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2"
+                                >
+                                    Email Address
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    placeholder="you@example.com"
+                                    maxlength="254"
+                                    class="block w-full rounded-xl border border-slate-200 bg-white/70 px-4 py-3 text-base text-slate-950 placeholder:text-slate-400 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-400/10 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-brand-400/50"
+                                />
+                                <p
+                                    id="error-email"
+                                    class="mt-2 hidden text-sm text-red-600 dark:text-red-400"
+                                ></p>
+                            </div>
+
+                            <div>
+                                <label
+                                    for="message"
+                                    class="block text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2"
+                                >
+                                    Message
+                                </label>
+                                <textarea
+                                    id="message"
+                                    name="message"
+                                    rows="5"
+                                    placeholder="How can we help?"
+                                    maxlength="5000"
+                                    class="block w-full resize-y rounded-xl border border-slate-200 bg-white/70 px-4 py-3 text-base text-slate-950 placeholder:text-slate-400 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-400/10 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-brand-400/50"
+                                ></textarea>
+                                <p
+                                    id="error-message"
+                                    class="mt-2 hidden text-sm text-red-600 dark:text-red-400"
+                                ></p>
+                            </div>
+
+                            <div id="notice-container"></div>
+
+                            <button
+                                type="submit"
+                                id="contact-submit"
+                                class="group flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-950 px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-150 hover:scale-[1.02] hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100 dark:bg-white dark:text-slate-950 dark:hover:bg-brand-100"
+                            >
+                                <svg
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <line x1="22" y1="2" x2="11" y2="13" />
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                                </svg>
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                </section>
+            </main>
+
+	    <%- include('partials/footer') %>
+        </div>
+
+        <script src="/js/contact-handler.js"></script>
+    </body>
+</html>

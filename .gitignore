@@ -1,0 +1,8 @@
+.env
+node_modules
+data
+private_downloads
+sessions
+db/store.db*
+public/uploads
+public/galleries

@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build CSS
+        run: npm run build:css
+
+      - name: Syntax-check all JavaScript
+        run: |
+          find . -path ./node_modules -prune -o -name '*.js' -print \
+            | xargs -n1 node --check
+
+      - name: Smoke test (server boots and serves a page)
+        env:
+          PORT: "3002"
+          SESSION_SECRET: "ci-smoke-test-secret"
+          DB_PATH: "/tmp/ci-store.db"
+        run: |
+          node server.js &
+          SERVER_PID=$!
+
+          # Give the server up to 30s to start listening.
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:3002/ >/dev/null; then
+              echo "Server responded."
+              break
+            fi
+            sleep 1
+          done
+
+          # Final check; fail the job if the home page did not return 200.
+          if curl -sf http://localhost:3002/ >/dev/null; then
+            echo "Smoke test passed."
+            kill "$SERVER_PID"
+          else
+            echo "Smoke test failed: server did not respond."
+            kill "$SERVER_PID" 2>/dev/null || true
+            exit 1
+          fi

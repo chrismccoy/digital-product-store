@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../partials/head', { seo: typeof seo !== 'undefined' ? seo : undefined }) %>
+    </head>
+    <body
+        class="font-sans antialiased bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 selection:bg-brand-400/30"
+    >
+
+	<%- include('../partials/header') %>
+
+            <%- include('../partials/breadcrumbs', { breadcrumbs: typeof breadcrumbs !== 'undefined' ? breadcrumbs : [] }) %>
+
+            <main
+                class="relative z-10 flex-1 mx-auto w-full max-w-7xl px-6 lg:px-8 pb-24"
+            >
+                <section class="pt-12 pb-10 text-center">
+                    <div
+                        class="mb-5 inline-flex items-center gap-2 rounded-full border border-brand-400/20 bg-brand-400/10 px-4 py-2 text-xs font-medium tracking-[0.2em] text-brand-700 uppercase dark:text-brand-200"
+                    >
+                        One-time payment · Lifetime access
+                    </div>
+                    <h2
+                        class="text-5xl font-black leading-none tracking-tight text-slate-950 dark:text-white sm:text-6xl lg:text-7xl"
+                    >
+                        <span
+                            class="bg-gradient-to-r from-brand-500 via-cyan-500 to-fuchsia-500 bg-clip-text text-transparent"
+                        >
+                            <%= product.name %>
+                        </span>
+                    </h2>
+                    <p
+                        class="mx-auto mt-5 max-w-xl text-lg leading-8 text-slate-600 dark:text-slate-300"
+                    >
+                       <%= product.text %>.
+                    </p>
+                    <p
+                        class="mx-auto mt-5 max-w-xl text-lg leading-8 text-slate-600 dark:text-slate-300"
+                    >
+                        Get instant lifetime access with a single one-time payment
+                    </p>
+                    <% if (category) { %>
+                    <div class="mt-6 flex justify-center">
+                        <a
+                            href="/category/<%= category.id %>"
+                            class="inline-flex items-center gap-1.5 rounded-full border border-brand-300 bg-brand-50 px-4 py-2 text-sm font-semibold text-brand-700 transition hover:bg-brand-100 dark:border-brand-400/30 dark:bg-brand-400/10 dark:text-brand-200"
+                        >
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+                                <path d="M6 6h.008" />
+                            </svg>
+                            <%= category.name %>
+                        </a>
+                    </div>
+                    <% } %>
+
+                    <% if (product.site_url || product.live_demo) { %>
+                    <div class="mt-6 flex flex-wrap justify-center gap-3">
+                      <% if (product.site_url) { %>
+                      <a href="<%= product.site_url %>" target="_blank" rel="noopener"
+                         class="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-white/15 dark:bg-white/5 dark:text-slate-200">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+                        Visit Website
+                      </a>
+                      <% } %>
+                      <% if (product.live_demo) { %>
+                      <a href="<%= product.live_demo %>" target="_blank" rel="noopener"
+                         class="inline-flex items-center gap-2 rounded-full bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-600">
+                        Live Demo
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                      </a>
+                      <% } %>
+                    </div>
+                    <% } %>
+
+                    <% if (tags && tags.length) { %>
+                    <div class="mt-5 flex flex-wrap justify-center gap-2">
+                      <% tags.forEach(function (tag) { %>
+                      <a href="/tag/<%= tag.id %>"
+                         class="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600 transition hover:bg-brand-50 hover:text-brand-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
+                        #<%= tag.name %>
+                      </a>
+                      <% }); %>
+                    </div>
+                    <% } %>
+                </section>
+
+                <section
+                    id="payment-form"
+                    class="mx-auto max-w-lg"
+                    data-price="<%= product.price %>"
+                    data-description="<%= product.text %>"
+                    data-product-id="<%= product.id %>"
+                >
+                    <div
+                        class="overflow-hidden rounded-[2rem] border border-slate-200 bg-white/80 shadow-panelLight dark:border-white/10 dark:bg-white/5 dark:shadow-panelDark"
+                    >
+                        <div
+                            class="border-b border-slate-200 bg-slate-50/80 px-8 py-5 dark:border-white/10 dark:bg-white/5"
+                        >
+                            <p
+                                class="text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500"
+                            >
+                                Secure Checkout
+                            </p>
+                            <div class="mt-2 flex items-baseline gap-2">
+                                <span
+                                    class="text-5xl font-black tracking-tight text-slate-950 dark:text-white"
+                                >
+                                    $<%= parseFloat(product.price).toFixed(2) %>
+                                </span>
+                                <span
+                                    class="text-sm text-slate-500 dark:text-slate-400"
+                                    >USD / one-time</span
+                                >
+                            </div>
+                        </div>
+
+                        <div class="p-8 space-y-6">
+                            <div class="flex flex-wrap gap-2">
+                                <span
+                                    class="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300"
+                                >
+                                    <svg
+                                        width="11"
+                                        height="11"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2.5"
+                                    >
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                    Secure payment
+                                </span>
+                                <span
+                                    class="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300"
+                                >
+                                    <svg
+                                        width="11"
+                                        height="11"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2.5"
+                                    >
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                    Instant download
+                                </span>
+                                <span
+                                    class="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300"
+                                >
+                                    <svg
+                                        width="11"
+                                        height="11"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2.5"
+                                    >
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                    Lifetime access
+                                </span>
+                            </div>
+
+                            <div
+                                id="payment-messages"
+                                class="hidden rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-600 dark:border-red-400/20 dark:bg-red-400/10 dark:text-red-300"
+                            ></div>
+
+                            <div id="paypal-button-container"></div>
+
+                            <p
+                                class="text-center text-xs text-slate-400 dark:text-slate-500"
+                            >
+                                You will be redirected to PayPal to complete
+                                your payment securely.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <% if (images && images.length) { %>
+                <section class="pb-16" data-gallery>
+                  <h3 class="mb-6 text-center text-lg font-bold text-slate-900 dark:text-white">Screenshots</h3>
+                  <div class="grid grid-cols-1 gap-[10px] sm:grid-cols-2 lg:grid-cols-3">
+                    <% images.forEach(function (img, i) { %>
+                    <div data-gallery-item data-index="<%= i %>" data-src="<%= img.path %>"
+                      class="group relative aspect-video cursor-pointer overflow-hidden rounded-[14px] border border-slate-200 bg-slate-100 shadow-card transition-[transform,box-shadow] duration-200 hover:-translate-y-[3px] hover:shadow-card-hover dark:border-white/10 dark:bg-white/5">
+                      <img src="<%= img.thumb_path || img.path %>" alt="Screenshot <%= i + 1 %>" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <span class="absolute left-2 top-[6px] rounded-full bg-white/90 px-[7px] py-[2px] text-[11px] font-extrabold text-slate-900 backdrop-blur"><%= i + 1 %></span>
+                      <div class="absolute inset-0 flex items-center justify-center bg-black/[0.35] opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                        <div class="flex h-9 w-9 items-center justify-center rounded-full bg-white/95 shadow-[0_4px_16px_rgba(0,0,0,0.2)]">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2d88ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+                        </div>
+                      </div>
+                    </div>
+                    <% }); %>
+                  </div>
+                </section>
+                <% } %>
+            </main>
+
+	    <%- include('../partials/footer') %>
+        </div>
+
+        <script
+            src="https://www.paypal.com/sdk/js?client-id=<%= paypalClientId %>&currency=USD"
+        ></script>
+        <script src="/js/checkout.js"></script>
+        <script src="/js/gallery-lightbox.js"></script>
+    </body>
+</html>

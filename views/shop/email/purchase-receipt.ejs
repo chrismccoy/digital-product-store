@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Your Purchase Receipt</title>
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    Roboto, Helvetica, Arial, sans-serif;
+                background-color: #f1f5f9;
+                color: #0f172a;
+                padding: 32px 16px;
+            }
+            .wrapper {
+                max-width: 580px;
+                margin: 0 auto;
+            }
+            .card {
+                background: #ffffff;
+                border-radius: 24px;
+                border: 1px solid #e2e8f0;
+                overflow: hidden;
+                box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            }
+            .card-header {
+                background: linear-gradient(
+                    135deg,
+                    #0f172a 0%,
+                    #1e3a5f 100%
+                );
+                padding: 32px 32px 28px;
+                text-align: center;
+            }
+            .card-header h1 {
+                color: #ffffff;
+                font-size: 22px;
+                font-weight: 800;
+                letter-spacing: -0.02em;
+            }
+            .card-header p {
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 13px;
+                margin-top: 4px;
+            }
+            .card-body {
+                padding: 32px;
+            }
+            .greeting {
+                font-size: 17px;
+                color: #0f172a;
+                margin-bottom: 8px;
+            }
+            .greeting strong {
+                font-weight: 700;
+            }
+            .subtitle {
+                font-size: 14px;
+                color: #64748b;
+                margin-bottom: 28px;
+                line-height: 1.6;
+            }
+            .section-label {
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: #94a3b8;
+                margin-bottom: 12px;
+            }
+            .details-list {
+                border: 1px solid #e2e8f0;
+                border-radius: 16px;
+                overflow: hidden;
+                margin-bottom: 24px;
+            }
+            .detail-row {
+                display: flex;
+                align-items: flex-start;
+                padding: 14px 18px;
+                border-bottom: 1px solid #f1f5f9;
+            }
+            .detail-row:last-child {
+                border-bottom: none;
+            }
+            .detail-row.highlight {
+                background-color: #fffbeb;
+            }
+            .detail-label {
+                flex-shrink: 0;
+                width: 130px;
+                font-size: 12px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                color: #94a3b8;
+                padding-top: 2px;
+            }
+            .detail-value {
+                flex: 1;
+                font-size: 14px;
+                color: #0f172a;
+                word-break: break-all;
+            }
+            .txn-badge {
+                display: inline-block;
+                background: #fef3c7;
+                color: #92400e;
+                border-radius: 8px;
+                padding: 3px 8px;
+                font-size: 13px;
+                font-weight: 700;
+            }
+            .notice-box {
+                border: 1px solid #e2e8f0;
+                border-radius: 16px;
+                padding: 20px 22px;
+                background: #f8fafc;
+                margin-bottom: 28px;
+            }
+            .notice-box h3 {
+                font-size: 12px;
+                font-weight: 700;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: #475569;
+                margin-bottom: 8px;
+            }
+            .notice-box p {
+                font-size: 13px;
+                color: #64748b;
+                line-height: 1.6;
+            }
+            .notice-box strong {
+                background: #fef3c7;
+                color: #92400e;
+                border-radius: 4px;
+                padding: 1px 5px;
+            }
+            .cta-wrap {
+                text-align: center;
+                margin-top: 8px;
+            }
+            .cta-btn {
+                display: inline-block;
+                background: #0f172a;
+                color: #ffffff;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 700;
+                border-radius: 999px;
+                padding: 14px 32px;
+                letter-spacing: 0.02em;
+                transition: background 0.15s;
+            }
+            .footer {
+                margin-top: 28px;
+                text-align: center;
+                font-size: 12px;
+                color: #94a3b8;
+                line-height: 1.6;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="card">
+                <div class="card-header">
+                    <h1>Purchase Receipt</h1>
+                    <p>Thank you for your order</p>
+                </div>
+
+                <div class="card-body">
+                    <p class="greeting">
+                        Hi <strong><%= transaction.payer.firstName %></strong>,
+                    </p>
+                    <p class="subtitle">
+                        Thanks for purchasing
+                        <strong><%= transaction.product.name %></strong>. Your
+                        transaction was successful and your download is ready.
+                    </p>
+
+                    <p class="section-label">// Purchase Details</p>
+                    <div class="details-list">
+                        <div class="detail-row">
+                            <span class="detail-label">Product</span>
+                            <span class="detail-value"
+                                ><%= transaction.product.name %> — Lifetime
+                                License</span
+                            >
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Amount Paid</span>
+                            <span class="detail-value"
+                                >$<%= transaction.product.price %> USD</span
+                            >
+                        </div>
+                        <div class="detail-row highlight">
+                            <span class="detail-label">Transaction ID</span>
+                            <span class="detail-value">
+                                <span class="txn-badge"
+                                    ><%= transaction.id %></span
+                                >
+                            </span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Date</span>
+                            <span class="detail-value"
+                                ><%= new
+                                Date(transaction.purchaseDate).toDateString()
+                                %></span
+                            >
+                        </div>
+                    </div>
+
+                    <div class="notice-box">
+                        <h3>How to Redownload</h3>
+                        <p>
+                            Save this email. To redownload your files in the
+                            future, visit the link below and enter your
+                            <strong>Transaction ID</strong>.
+                        </p>
+                    </div>
+
+                    <div class="cta-wrap">
+                        <a href="<%= redownloadUrl %>" class="cta-btn">
+                            Redownload Page →
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <p class="footer">
+                &copy; <%= new Date().getFullYear() %> <%= footerDomain %>. All
+                rights reserved.
+            </p>
+        </div>
+    </body>
+</html>
