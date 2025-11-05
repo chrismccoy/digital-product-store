@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard // </title>
+    <link href="/css/app.css" rel="stylesheet" />
+  </head>
+  <body class="bg-white text-black font-mono">
+    <div class="grid grid-cols-1 lg:grid-cols-5 min-h-screen">
+      <aside
+        class="hidden lg:flex lg:flex-col col-span-1 bg-neutral-50 border-r-4 border-black"
+      >
+        <div class="p-6 border-b-4 border-black">
+          <h1 class="text-2xl font-bold uppercase">
+            <a href="/admin/dashboard" class="hover:bg-yellow-300"
+              >Dashboard</a
+            >
+          </h1>
+          <p class="text-sm text-neutral-600">ADMIN PANEL</p>
+        </div>
+
+        <nav class="flex-grow p-6">
+          <h2 class="text-sm uppercase text-neutral-500 mb-4">// Main</h2>
+          <ul class="space-y-3">
+            <li>
+              <a
+                href="/admin/dashboard"
+                class="block font-bold uppercase p-2 bg-black text-yellow-300 border-2 border-black"
+              >
+                Products
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="p-6 mt-auto border-t-2 border-black">
+          <form action="/admin/logout" method="POST">
+            <button
+              type="submit"
+              class="text-sm font-bold uppercase underline hover:bg-yellow-300"
+            >
+              LOGOUT
+            </button>
+          </form>
+        </div>
+      </aside>
+
+      <main class="col-span-1 lg:col-span-4 p-4 sm:p-6 lg:p-8">
+        <header
+          class="flex justify-between items-center pb-6 border-b-2 border-black"
+        >
+          <div>
+            <h1 class="text-4xl font-extrabold uppercase">Product Dashboard</h1>
+            <p class="text-neutral-600">
+              SYSTEM STATUS:
+              <span class="text-green-600 font-bold">OPERATIONAL</span>
+            </p>
+          </div>
+        </header>
+
+        <section class="mt-8">
+          <div
+            id="products-view-container"
+            class="<% if (products.length === 0) { %>hidden<% } %>"
+          >
+            <div class="flex justify-between items-start">
+              <h3
+                class="text-3xl font-bold uppercase inline-block bg-black text-yellow-300 px-4 py-2 mb-4"
+              >
+                // Your Products
+              </h3>
+              <button
+                id="add-product-btn-header"
+                type="button"
+                class="px-8 py-4 bg-yellow-300 text-black text-lg font-bold border-2 border-black uppercase transition-all duration-150 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[8px_8px_0px_#000]"
+              >
+                Add Product
+              </button>
+            </div>
+            <div
+              id="products-table-container"
+              class="border-2 border-black overflow-x-auto"
+            >
+              <table class="w-full">
+                <thead class="bg-black text-yellow-300">
+                  <tr>
+                    <th class="text-left uppercase p-4">Name</th>
+                    <th class="text-left uppercase p-4">Price</th>
+                    <th class="text-left uppercase p-4">Short Text</th>
+                    <th class="text-left uppercase p-4">Actions</th>
+                  </tr>
+                </thead>
+                <tbody
+                  id="products-table-body"
+                  class="divide-y-2 divide-black"
+                >
+                  <% products.forEach(product => { %> <%-
+                  include('partials/product-row', { product: product }) %> <% })
+                  %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div
+            id="empty-state-message"
+            class="text-center mt-16 border-4 border-dashed border-black p-12 <% if (products.length > 0) { %>hidden<% } %>"
+          >
+            <h3 class="text-2xl font-bold uppercase text-black">
+              No products found
+            </h3>
+            <p class="mt-2 text-lg text-neutral-600">
+              Get started by adding a new product to your catalog.
+            </p>
+            <div class="mt-8">
+              <button
+                id="add-product-btn-empty"
+                type="button"
+                class="px-8 py-4 bg-yellow-300 text-black text-xl font-bold border-2 border-black uppercase transition-all duration-150 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[8px_8px_0px_#000]"
+              >
+                Add Your First Product
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div
+      id="toast-notification"
+      class="fixed top-5 right-5 z-20 w-full max-w-xs p-4 text-black border-2 border-black shadow-[8px_8px_0px_#000] hidden"
+      role="alert"
+    >
+      <p id="toast-message" class="text-lg font-bold uppercase"></p>
+    </div>
+
+    <%- include('partials/product-modal') %>
+
+    <script src="/js/admin-dashboard.js"></script>
+  </body>
+</html>

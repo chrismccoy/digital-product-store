@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title><%= siteTitle %></title>
+		<link href="/css/app.css" rel="stylesheet" />
+	</head>
+	<body class="bg-white text-black font-mono">
+		<div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+			<header
+				class="flex justify-between items-center py-4 border-b-4 border-black"
+			>
+				<h1 class="text-2xl md:text-3xl font-bold uppercase">
+					<a href="<%= homeURL %>" class="hover:bg-yellow-300"
+						><%= homeText %></a
+					>
+				</h1>
+				<nav class="hidden md:flex space-x-6 text-lg font-bold">
+					<a href="<%= contactURL %>" class="hover:bg-yellow-300 px-2"
+						>Contact</a
+					>
+				</nav>
+			</header>
+
+			<main>
+				<section class="text-center py-12 md:py-16">
+					<h2
+						class="text-5xl md:text-7xl lg:text-8xl font-extrabold uppercase tracking-tighter"
+					>
+						The Shop
+					</h2>
+					<p class="max-w-2xl mx-auto mt-6 text-lg">
+						A collection of digital goods and resources designed to help you
+						build better, faster.
+					</p>
+				</section>
+
+				<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+					<% products.forEach(product => { %>
+					<div class="border-2 border-black flex flex-col">
+						<img
+							src="<%= product.image %>"
+							alt="<%= product.name %> Thumbnail"
+							class="w-full h-auto border-b-2 border-black"
+						/>
+						<div class="p-6 flex flex-col flex-grow">
+							<h3 class="text-2xl font-bold uppercase">
+								<%= product.name %>
+							</h3>
+							<p class="text-base flex-grow my-4">
+								<%= product.description %>
+							</p>
+							
+							<div class="mt-6 py-4 border-y-2 border-black text-center">
+                                <% if (parseFloat(product.price) === 0) { %>
+                                    <span class="text-2xl font-bold">FREE</span>
+                                <% } else { %>
+                                    <span class="text-2xl font-bold">$<%= product.price %></span>
+                                <% } %>
+							</div>
+
+							<a
+								href="/product/<%= product.id %>"
+								class="block w-full text-center mt-4 px-4 py-3 bg-white text-black font-bold border-2 border-black uppercase transition-all duration-150 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[4px_4px_0px_#000]"
+							>
+								View Details
+							</a>
+						</div>
+					</div>
+					<% }) %>
+				</section>
+
+				<% if (pagination.totalPages > 1) { %>
+				<section class="mt-16">
+					<nav
+						class="flex justify-center items-center space-x-2"
+						aria-label="Pagination"
+					>
+						<% const prevPage = pagination.currentPage - 1; %>
+						<a
+							href="<%= prevPage === 1 ? '/' : '/page/' + prevPage + '/' %>"
+							class="px-4 py-2 font-bold border-2 border-black uppercase <% if (!pagination.hasPreviousPage) { %> text-neutral-400 pointer-events-none bg-neutral-100 <% } else { %> hover:bg-yellow-300 <% } %>"
+						>
+							&lt; Prev
+						</a>
+
+						<% for (let i = 1; i <= pagination.totalPages; i++) { %>
+						<a
+							href="<%= i === 1 ? '/' : '/page/' + i + '/' %>"
+							class="px-4 py-2 font-bold border-2 border-black uppercase <% if (i === pagination.currentPage) { %> bg-black text-yellow-300 pointer-events-none <% } else { %> hover:bg-yellow-300 <% } %>"
+						>
+							<%= i %>
+						</a>
+						<% } %>
+
+						<a
+							href="/page/<%= pagination.currentPage + 1 %>/"
+							class="px-4 py-2 font-bold border-2 border-black uppercase <% if (!pagination.hasNextPage) { %> text-neutral-400 pointer-events-none bg-neutral-100 <% } else { %> hover:bg-yellow-300 <% } %>"
+						>
+							Next &gt;
+						</a>
+					</nav>
+				</section>
+				<% } %>
+			</main>
+
+			<footer class="py-12 mt-16 border-t-4 border-black text-center">
+				<p class="mt-12 text-sm text-neutral-600">
+					&copy; 2025 <%= footerDomain %>. ALL RIGHTS RESERVED.
+				</p>
+			</footer>
+		</div>
+	</body>
+</html>

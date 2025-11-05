@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Your <%= product.name %> Purchase Receipt</title>
+		<style>
+			body {
+				font-family: monospace;
+				background-color: #f7fafc;
+				color: #1a202c;
+				margin: 0;
+				padding: 20px;
+			}
+			.container {
+				max-width: 600px;
+				margin: 0 auto;
+				background-color: #ffffff;
+				border: 4px solid #000000;
+				padding: 24px;
+			}
+			.header {
+				background-color: #000000;
+				color: #fefcbf; /* yellow-200 */
+				padding: 16px;
+				text-align: center;
+				font-size: 24px;
+				font-weight: bold;
+				text-transform: uppercase;
+			}
+			.content {
+				padding: 24px 0;
+			}
+			.details-table {
+				width: 100%;
+				border-collapse: collapse;
+			}
+			.details-table td {
+				padding: 12px;
+				border-bottom: 2px solid #000000;
+			}
+			.details-table td.label {
+				font-weight: bold;
+				text-transform: uppercase;
+				width: 35%;
+			}
+			.highlight {
+				background-color: #fefcbf;
+				padding: 4px;
+				font-weight: bold;
+			}
+			.redownload-section {
+				margin-top: 32px;
+				padding: 16px;
+				border: 2px dashed #000000;
+				background-color: #f7fafc;
+			}
+			.footer {
+				margin-top: 24px;
+				text-align: center;
+				font-size: 12px;
+				color: #718096;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">Purchase Receipt</div>
+			<div class="content">
+				<p style="font-size: 18px">
+					Hi <%= transaction.payer.firstName %>,
+				</p>
+				<p>
+					Thank you for your purchase of the <%= product.name %>! Your transaction
+					was successful.
+				</p>
+
+				<h3
+					style="
+						font-size: 20px;
+						text-transform: uppercase;
+						margin-top: 32px;
+						margin-bottom: 16px;
+					"
+				>
+					// Purchase Details
+				</h3>
+				<table class="details-table">
+					<tr>
+						<td class="label">Product:</td>
+						<td><%= product.name %> - Lifetime License</td>
+					</tr>
+					<tr>
+						<td class="label">Amount Paid:</td>
+						<td>$<%= product.price %> USD</td>
+					</tr>
+					<tr>
+						<td class="label">Transaction ID:</td>
+						<td><span class="highlight"><%= transaction.id %></span></td>
+					</tr>
+					<tr>
+						<td class="label">Purchase Date:</td>
+						<td><%= new Date(transaction.purchaseDate).toDateString() %></td>
+					</tr>
+				</table>
+
+				<div class="redownload-section">
+					<h3 style="text-transform: uppercase; margin-top: 0">
+						How to Redownload
+					</h3>
+					<p>
+						Please save this email. If you ever need to redownload your
+						files, visit the link below and enter your
+						<strong>Transaction ID</strong>.
+					</p>
+					<p style="text-align: center; margin-top: 20px">
+						<a
+							href="<%= redownloadUrl %>"
+							style="
+								background-color: #fefcbf;
+								color: #000000;
+								padding: 12px 24px;
+								text-decoration: none;
+								font-weight: bold;
+								border: 2px solid #000;
+								text-transform: uppercase;
+							"
+							>Redownload Page</a
+						>
+					</p>
+				</div>
+			</div>
+			<div class="footer">
+				&copy; <%= new Date().getFullYear() %> <%= footerDomain %>. ALL RIGHTS
+				RESERVED.
+			</div>
+		</div>
+	</body>
+</html>

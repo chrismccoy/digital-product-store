@@ -1,0 +1,31 @@
+{
+  "name": "digital-product-store",
+  "version": "1.0.0",
+  "description": "A dual-mode e-commerce application with an integrated admin panel.",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "concurrently \"nodemon server.js\" \"npm:watch:css\"",
+    "build:css": "tailwindcss -i ./public/tailwind/app.css -o ./public/css/app.css --minify",
+    "watch:css": "tailwindcss -i ./public/tailwind/app.css -o ./public/css/app.css --watch",
+    "products": "node ./scripts/manageProducts.js",
+    "products:help": "node ./scripts/manageProducts.js --help",
+    "test:email": "node ./scripts/test-email.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "method-override": "^3.0.0",
+    "nodemailer": "^7.0.6",
+    "session-file-store": "^1.5.0",
+    "express-rate-limit": "^8.1.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.10",
+    "tailwindcss": "^3.4.17"
+  }
+}
