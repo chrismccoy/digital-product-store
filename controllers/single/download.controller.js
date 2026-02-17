@@ -60,7 +60,9 @@ async function verifyAndAuthorizeRedownload(req, res) {
     if (transaction) {
       // Security: If a valid transaction is found, authorize the download using the static identifier.
       req.session.authorizedProduct = "single-product";
-      res.json({ success: true, transaction });
+      req.session.save(() => {
+        res.json({ success: true, transaction });
+      });
     } else {
       res
         .status(404)

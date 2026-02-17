@@ -74,7 +74,9 @@ async function verifyAndAuthorizeRedownload(req, res) {
       // the specific product ID associated with that transaction in the user's session.
       req.session.authorizedProduct = transaction.product.id;
       // Respond to the client with success and the transaction details.
-      res.json({ success: true, transaction });
+      req.session.save(() => {
+        res.json({ success: true, transaction });
+      });
     } else {
       // If no match was found, respond with a 404 Not Found status.
       res

@@ -25,6 +25,12 @@ if (config.isShopMode) {
 
 const app = express();
 
+// Trust the first proxy (e.g., nginx, Cloudflare) so that secure cookies
+// and req.protocol work correctly behind a reverse proxy with SSL termination.
+if (config.isProduction) {
+  app.set("trust proxy", 1);
+}
+
 // Before the server starts, we ensure that the transaction data directory and file exist.
 initializeDatabase().catch((err) => {
   console.error("Fatal: Could not initialize the database. Exiting.", err);
